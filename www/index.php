@@ -1,3 +1,7 @@
+<?php
+session_start(); // Démarre la session une seule fois au début
+?>
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -6,11 +10,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Index</title>
 </head>
-<body>
-    <h1>index.PHP</h1>
-    <?php
-    include('./View/profil.php');
-    ?>
-    <p><a href="Controller/deconnexion.php">Se déconnecter</a></p>
-</body>
+    <body>
+        <h1>index.PHP</h1>
+
+        <?php
+            header(header: "Location: ./View/connexion.php");
+            exit();
+        ?>
+
+    </body> 
 </html>

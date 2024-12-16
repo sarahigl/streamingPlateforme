@@ -1,26 +1,34 @@
 <?php
-include('../Model/utilisateurs.php');
-include('../Model/_classes.php');
-require_once('./View/connexion.php');
+
 
 session_start();
-require_once'../Controller/connexion.php';
-if (isset($_SESSION['userEmail'])) {
-    $userEmail = $_SESSION['userEmail'];
-    try{
-        //prepare & execute et fetch
-        $user = $utilisateur->selectByPseudo($userEmail);
-        // Vérifier si l'utilisateur existe
-        if ($user) {
-            // Afficher les informations de l'utilisateur
-            echo "Bienvenue, " . htmlspecialchars($user['pseudo_utilisateur']) ."!";
-        } else {
-            echo "Utilisateur non trouvé.";
-        }
-    } catch (PDOException $e) {
-        // En cas d'erreur
-        echo "Erreur de connexion ou de requête : " . $e->getMessage();
-    }
-} else {
-    echo "Aucun utilisateur connecté.";
+
+// Vérifie si l'utilisateur est connecté
+if (!isset($_SESSION['utilisateur'])) {
+    // Redirige vers la page de connexion si l'utilisateur n'est pas connecté
+    header("Location: /streamingPlateforme/www/View/connexion.php");
+    exit();
 }
+
+// Récupère les informations de l'utilisateur
+$user = $_SESSION['utilisateur'];
+?>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="..\style.css">
+    <title>navigation</title>
+</head>
+<body>
+    <?php
+    include_once('header.php');
+    //include_once('navigation.php');
+    ?>
+    <h1 style="text-align: center; padding:10px">Bienvenue, <?php echo htmlspecialchars($user['email_utilisateur']); ?> !</h1>
+</body>
+</html>
+<style>
+
+
