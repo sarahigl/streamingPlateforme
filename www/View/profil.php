@@ -1,34 +1,37 @@
 <?php
 
-
 session_start();
 
-// Vérifie si l'utilisateur est connecté
+// Vérifie si l'utilisateur est co
 if (!isset($_SESSION['utilisateur'])) {
-    // Redirige vers la page de connexion si l'utilisateur n'est pas connecté
     header("Location: /streamingPlateforme/www/View/connexion.php");
     exit();
 }
 
-// Récupère les informations de l'utilisateur
+// Récup les info de l'utilisateur
 $user = $_SESSION['utilisateur'];
 ?>
-
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="..\style.css">
-    <title>navigation</title>
+    <link rel="stylesheet" href="../style.css?v=<?= uniqid() ?>">
+    <title>Profil</title>
 </head>
 <body>
-    <?php
-    include_once('header.php');
-    //include_once('navigation.php');
+    <?php include_once('header.php');
     ?>
-    <h1 style="text-align: center; padding:10px">Bienvenue, <?php echo htmlspecialchars($user['email_utilisateur']); ?> !</h1>
+
+    <h1 style="text-align: center; padding:10px">
+        Bienvenue, <?php echo htmlspecialchars($user['pseudo_utilisateur']); ?> !
+    </h1>
+    <form action="../Model/delete.php" method="POST">
+        <input type="submit" id="button" value="Supprimer mon compte">
+    </form>
+    
 </body>
 </html>
-<style>
+
 
 
