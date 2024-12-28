@@ -1,0 +1,21 @@
+
+.auth{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 200px;
+    width: auto;
+}
+.connexion{
+    padding: 10px 25px;
+    border-radius: 10px;
+}
+.titleCo{
+    text-align: center;
+}
+
+input{
+    border-radius: 10px;
+    padding: 10px;
+}

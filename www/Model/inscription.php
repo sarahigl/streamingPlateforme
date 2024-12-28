@@ -1,26 +1,44 @@
+
+
 <?php
-    // On inclut notre connecteur à la base de données
-    include('../Model/connect.php');
+    // Inclure la classe Utilisateurs
+    include_once('../Model/Utilisateurs.php');
 
-    // On entre dans la boucle seulement lors de l’envoi du formulaire
+    include_once('../Model/connect.php');
+
+    error_reporting(E_ALL);
+    ini_set('display_errors', 1);
+
     if(!empty($_POST["form_inscription"])) {
-        // On recherche si l'adresse email existe déjà en BDD
-        $select = $db->prepare("SELECT email_utilisateur FROM utilisateurs WHERE email_utilisateur=:email_utilisateur;");
-        $select->bindParam(":email_utilisateur", $_POST["form_email"]);
-        $select->execute();
-        if(empty($select->fetch(PDO::FETCH_COLUMN))) {
-            // Si ce n'est pas le cas, on vient l'insérer
-            $insert = $db->prepare("INSERT INTO utilisateurs(email_utilisateur, mot_de_passe_utilisateur)
-                                    VALUES(:email_utilisateur, :mot_de_passe_utilisateur);");
-            $insert->bindParam(":email_utilisateur", $_POST['form_email']);
-            // Nous hachons notre mdp avec l'algo BCRYPT et un coût algorithmique (par défaut à 10)
-            $user_password = password_hash($_POST['form_password'], PASSWORD_BCRYPT, array("cost" => 12));
-            $insert->bindParam(":mot_de_passe_utilisateur", $user_password);
+        // Récupérer les données du form
+        $nom = $_POST['form_nom'];
+        $prenom = $_POST['form_prenom'];
+        $pseudo = $_POST['form_pseudo'];
+        $email = $_POST['form_email'];
+        $password = password_hash($_POST['form_password'], PASSWORD_BCRYPT, ['cost' => 12]);
 
-            if($insert->execute()) {
-                // Si aucune erreur ne se produit, on propose de se connecter
-                die('<p style=”color: green;”>Inscription réussie.</p><a href="/View/connexion.php">Se connecter.</a>');
+        // Vérifier si l'email est déjà dans la base
+        $select = $db->prepare("SELECT email_utilisateur FROM utilisateurs WHERE email_utilisateur=:email_utilisateur;");
+        $select->bindParam(":email_utilisateur", $email);
+        $select->execute();
+
+        if (empty($select->fetch(PDO::FETCH_COLUMN))) {
+            // Créer un objet Utilisateur
+            include_once('../Model/_classes.php');
+            var_dump($_POST);
+            // Appeler la méthode insert pour insérer les données
+            $result = $utilisateur->insert($nom, $prenom, $pseudo, $email, $password);
+
+            if ($result) {
+                echo('<p style="color: green;">Inscription réussie.</p>');
+                header("Location: /streamingPlateforme/www/View/connexion.php");
+                exit();
+            } else {
+                die('<p style="color: red;">Erreur lors de l\'inscription.</p><a href="/View/inscription.php">Réessayer.</a>');
             }
-            die('<p style=”color: red;”>Inscription échouée.</p><a href="/View/inscription.php">Réessayer.</a>');
+        } else {
+            die('<p style="color: red;">L\'email est déjà utilisé.</p>');
         }
     }
+
+

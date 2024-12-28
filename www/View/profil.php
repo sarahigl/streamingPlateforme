@@ -1,26 +1,37 @@
 <?php
-include('../Model/utilisateurs.php');
-include('../Model/_classes.php');
-require_once('./View/connexion.php');
 
 session_start();
-require_once'../Controller/connexion.php';
-if (isset($_SESSION['userEmail'])) {
-    $userEmail = $_SESSION['userEmail'];
-    try{
-        //prepare & execute et fetch
-        $user = $utilisateur->selectByPseudo($userEmail);
-        // Vérifier si l'utilisateur existe
-        if ($user) {
-            // Afficher les informations de l'utilisateur
-            echo "Bienvenue, " . htmlspecialchars($user['pseudo_utilisateur']) ."!";
-        } else {
-            echo "Utilisateur non trouvé.";
-        }
-    } catch (PDOException $e) {
-        // En cas d'erreur
-        echo "Erreur de connexion ou de requête : " . $e->getMessage();
-    }
-} else {
-    echo "Aucun utilisateur connecté.";
+
+// Vérifie si l'utilisateur est co
+if (!isset($_SESSION['utilisateur'])) {
+    header("Location: /streamingPlateforme/www/View/connexion.php");
+    exit();
 }
+
+// Récup les info de l'utilisateur
+$user = $_SESSION['utilisateur'];
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../style.css?v=<?= uniqid() ?>">
+    <title>Profil</title>
+</head>
+<body>
+    <?php include_once('header.php');
+    ?>
+
+    <h1 style="text-align: center; padding:10px">
+        Bienvenue, <?php echo htmlspecialchars($user['pseudo_utilisateur']); ?> !
+    </h1>
+    <form action="../Model/delete.php" method="POST">
+        <input type="submit" id="button" value="Supprimer mon compte">
+    </form>
+    
+</body>
+</html>
+
+
+
