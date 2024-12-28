@@ -37,9 +37,3 @@ sudo ufw allow ssh
 sudo ufw enabled
 #vérification des règles actives
 sudo ufw status numbered
-
-#si Git est installé commenter les lignes ci-dessous:
-#installation Git 
-sudo apt-get install git-all
-#désactivation d'Apache installé par git 
-sudo systemctl disable apache2
