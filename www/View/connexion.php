@@ -13,6 +13,7 @@
     <?php
     //session_start();
     include_once('header.php');
+    require('../Model/functions.php');
     // Vérifier si l'e-mail a été soumis
     if (isset($_POST['form_email'])) {
         $_SESSION['userEmail'] = $_POST['form_email'];
@@ -36,9 +37,10 @@
                 <input type="submit" value="Suivant" id="button">
             </form>
         <?php endif; ?>
+    
             <!-- Étape 2 : Mot de passe -->
         <?php if ($showPasswordStep): ?>
-            <form action="/streamingPlateforme/www/Controller/connexion.php" method="post">
+            <form action="../Controller/connexion.php" method="post">
                 <input type="hidden" name="form_connexion" value="1">
                 <input type="hidden" name="form_email" value="<?php echo htmlspecialchars($_SESSION['userEmail']); ?>">
                 <label for="form_password">Mot de passe:</label>

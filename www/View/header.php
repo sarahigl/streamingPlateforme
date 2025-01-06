@@ -25,7 +25,7 @@ session_start();
                 </h2>
             </div>
         <?php } ?>
-        <?php include_once('navigation.php'); ?>
+        <?php require_once('navigation.php'); ?>
     </header>
 </body>
 </html>

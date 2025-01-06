@@ -11,7 +11,7 @@
 </head>
 <body>
         <?php
-            header(header: "Location: ./View/connexion.php");
+            header(header: "Location: /View/connexion.php");
             exit();
         ?>
 

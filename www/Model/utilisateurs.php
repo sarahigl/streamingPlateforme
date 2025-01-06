@@ -4,6 +4,7 @@ Class utilisateurs
     private $insert;
     private $select;
     private $delete;
+    private $update;
     private $selectByPseudo;
 
     public function __construct($db)

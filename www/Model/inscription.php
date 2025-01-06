@@ -1,20 +1,16 @@
-
-
 <?php
-    // Inclure la classe Utilisateurs
-    include_once('../Model/Utilisateurs.php');
+    require_once('../Model/Utilisateurs.php');
+    require_once('../Model/connect.php');
 
-    include_once('../Model/connect.php');
+    //error_reporting(E_ALL);
+    //ini_set('display_errors', 1);
 
-    error_reporting(E_ALL);
-    ini_set('display_errors', 1);
-
-    if(!empty($_POST["form_inscription"])) {
-        // Récupérer les données du form
-        $nom = $_POST['form_nom'];
-        $prenom = $_POST['form_prenom'];
-        $pseudo = $_POST['form_pseudo'];
-        $email = $_POST['form_email'];
+    if(!empty($_POST["form_inscription"]) && filter_var($_POST["form_email"], FILTER_VALIDATE_EMAIL)) {
+        // Récupérer les données du form + nettoyer
+        $nom = htmlspecialchars($_POST['form_nom']);
+        $prenom = htmlspecialchars($_POST['form_prenom']);
+        $pseudo = htmlspecialchars($_POST['form_pseudo']);
+        $email = filter_var($_POST["form_email"], FILTER_SANITIZE_EMAIL);
         $password = password_hash($_POST['form_password'], PASSWORD_BCRYPT, ['cost' => 12]);
 
         // Vérifier si l'email est déjà dans la base

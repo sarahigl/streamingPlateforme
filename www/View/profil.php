@@ -1,10 +1,10 @@
 <?php
-
+//(remplacer include par require pour sécurité)
 session_start();
 
 // Vérifie si l'utilisateur est co
 if (!isset($_SESSION['utilisateur'])) {
-    header("Location: /streamingPlateforme/www/View/connexion.php");
+    header("Location: ../View/connexion.php");
     exit();
 }
 
@@ -20,7 +20,7 @@ $user = $_SESSION['utilisateur'];
     <title>Profil</title>
 </head>
 <body>
-    <?php include_once('header.php');
+    <?php require_once('header.php');
     ?>
 
     <h1 style="text-align: center; padding:10px">

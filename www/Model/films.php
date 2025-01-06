@@ -1,10 +1,12 @@
 <?
-include_once('connect.php');
+//(remplacer include par require pour X affiché toutes les rapports d'erreurs)
+require_once('connect.php');
 Class Films{
     private $db;
     private $insert;
     private $select;
     private $selectByID;
+    private $update;
     private $delete;
     private $title;
     private $desc;
@@ -75,6 +77,7 @@ Class Films{
             FROM films 
             WHERE id_film = :id_film;"
         );
+        //$this->update = $this->db->prepare('UPDATE films SET  ');
         $this->delete = $this->db->prepare("DELETE FROM films WHERE id_film = :id_film");
     }
     
@@ -82,7 +85,6 @@ Class Films{
     public function insert($titre, $description, $affiche, $lien, $duree)
     {
         $r = true;
-        // Exécution de la requête avec les paramètres
         $this->insert->execute([
             ":titre_film" => $titre,
             ":description_film" => $description,
@@ -91,8 +93,6 @@ Class Films{
             ":duree_film" => $duree
         ]);
         
-
-        // Vérification des erreurs
         if ($this->insert->errorCode() != 0) {
             print_r($this->insert->errorInfo());
             $r = false;
@@ -102,37 +102,35 @@ Class Films{
 
     public function select()
     {
-        // Exécution de la requête de sélection
+
         $this->select->execute();
 
-        // Vérification des erreurs
         if ($this->select->errorCode() != 0) {
             print_r($this->select->errorInfo());
         }
 
-        // Retour des résultats sous forme de tableau associatif
+        
         return $this->select->fetchAll(PDO::FETCH_ASSOC);
     }
     public function selectByID($id_film)
     {
-        // Exécution de la requête de sélection
+      
         $this->selectByID->execute(array(':id_film' => $id_film));
 
-        // Vérification des erreurs
+        
         if ($this->selectByID->errorCode() != 0) {
             print_r($this->selectByID->errorInfo());
         }
 
-        // Retour des résultats sous forme de tableau associatif
-        return $this->selectByID->fetchAll(PDO::FETCH_ASSOC);
+       
+        return $this->selectByID->fetch(PDO::FETCH_ASSOC);
     }
 
 
     public function delete($id_film){
         try {
             $this->delete->execute([":id_film" => $id_film]);
-    
-            // Vérifiez si la suppression a bien eu lieu
+            
             if ($this->delete->rowCount() > 0) {
                 return true; // Suppression réussie
             } else {
@@ -145,7 +143,7 @@ Class Films{
     }
 
 }
-include('../View/films.php');
+
 if(!empty($_POST['form_add_movie'])){
     $title = htmlspecialchars($_POST['form_title_movie'], ENT_QUOTES, 'UTF-8');
     $desc = htmlspecialchars($_POST['form_desc_movie'], ENT_QUOTES, 'UTF-8');
@@ -170,7 +168,7 @@ if(!empty($_POST['form_add_movie'])){
                 $file_name = basename($_FILES['form_img_movie']['name']);
                 $file_name = preg_replace('/[^a-zA-Z0-9\-_\.]/', '', $file_name);
                 //where to save
-                $targetDir = './imgs/';
+                $targetDir = '/imgs/';
                 $file_path = $targetDir . $file_name;
                 //saving bdd
                 if (move_uploaded_file($_FILES['form_img_movie']['tmp_name'], $file_path)) {
@@ -210,4 +208,5 @@ if(!empty($_POST['form_add_movie'])){
     }
 
 }
+
 

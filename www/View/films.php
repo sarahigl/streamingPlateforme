@@ -1,16 +1,16 @@
 <?php
-include_once('header.php');
-include_once('../Model/_classes.php');
+require_once('header.php');
+require_once('../Model/_classes.php');
 
 if (!isset($_SESSION['utilisateur'])) {
-    header("Location: /streamingPlateforme/www/View/connexion.php");
+    header("Location: View/connexion.php");
     exit();
 }
 
 $user = $_SESSION['utilisateur'];
 //display errors
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
+//error_reporting(E_ALL);
+//ini_set('display_errors', 1);
 
 ?>
 <!DOCTYPE html>
@@ -19,7 +19,8 @@ ini_set('display_errors', 1);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="..\style.css?v=<?= uniqid()?>">
-    <title>Séries</title>
+    <link rel="stylesheet" href=".\style\films.css?v=<?= uniqid()?>">
+    <title>Films</title>
 </head>
 <body>
     <h1>Films :</h1>
@@ -58,27 +59,26 @@ ini_set('display_errors', 1);
             
     ?><?php
         }
+
         //fetch data from bdd
         $req = $db->query('SELECT id_film, titre_film, description_film, affiche_film, duree_film FROM films;');
         $data = $req->fetchAll(PDO::FETCH_ASSOC);
         $req->closeCursor();
         ?>
-
         <table class="movies">
             <tr>
-                <th>ID</th>
                 <th>Titre</th>
                 <th>Description</th>
-                <th>affiche</th>
+                <th>Affiche</th>
                 <th>Duree</th>
-                <th> # </th>
+                <th>Supprimer</th>
+                <th>Modifier</th>
             </tr>
         <?php foreach ($data as $row) { ?>
             <tr>
-                <td class="details"><?= $row['id_film'] ?></td>
                 <td class="details"><?= $row['titre_film'] ?></td>
                 <td class="details"><?= $row['description_film'] ?></td>
-                <td class="details"><?= $row['affiche_film'] ?></td>
+                <td class="details"><img src="<?= $row['affiche_film'] ?>" alt="<?= $row['titre_film'] ?>" class="imgDisplay"></td>
                 <td class="details"><?= $row['duree_film'] ?> min</td>
                 <td class="details">
                     <form action="../Model/deleteMovie.php" method="POST">
@@ -87,35 +87,19 @@ ini_set('display_errors', 1);
                     </form>
                     
                 </td>
+                <td class="details">
+                    <form action="updateMovie.php" method="POST">
+                        <input type="hidden" name="id_film" value="<?= $row['id_film'] ?>">
+                        <input type="submit" id="button" value="Modifier">
+                    </form>
+                    
+                </td>
             </tr>
         <?php } ?>
         </table>
-
-        
-
 </body>
 </html>
-    <style>
-        .sectionAddMovie{
-            display: flex;
-            flex-direction: column;
-        }
-        input{
-            border-radius: 10px;
-        }
-        .movies{
-            display: flex;
-            justify-content: center;
-            padding: 10px;
-        }
-        .details{
-        margin: 15px;
-        border: 2px solid white;
-        padding: 10px;
-        border-radius: 10px;
-        align-content: center;
-        }
-    </style>
+    
 
 
    
