@@ -77,8 +77,10 @@ Class Films{
             FROM films 
             WHERE id_film = :id_film;"
         );
-        //$this->update = $this->db->prepare('UPDATE films SET  ');
-        $this->delete = $this->db->prepare("DELETE FROM films WHERE id_film = :id_film");
+        $this->update = $this->db->prepare('UPDATE films 
+                                            SET titre_film = :titrefilm, description_film = :description_film, affiche_film= :affiche_film, lien_film= :lien_film, duree_film= :duree_film
+                                            WHERE id_film = :id_film;');
+        $this->delete = $this->db->prepare("DELETE FROM films WHERE id_film = :id_film;");
     }
     
 
@@ -112,20 +114,26 @@ Class Films{
         
         return $this->select->fetchAll(PDO::FETCH_ASSOC);
     }
-    public function selectByID($id_film)
-    {
-      
-        $this->selectByID->execute(array(':id_film' => $id_film));
-
-        
-        if ($this->selectByID->errorCode() != 0) {
-            print_r($this->selectByID->errorInfo());
-        }
-
-       
+    public function getFilmByID($id_film){
+        $this->selectByID->execute([':id_film' => $id_film]);
         return $this->selectByID->fetch(PDO::FETCH_ASSOC);
     }
+    public function update($id_film, $data){
+        $result = $this->update->execute([
+            ':titre_film' => $data['titre_film'],
+            ':description_film' => $data['description_film'],
+            ':affiche_film' => $data['affiche_film'],
+            ':lien_film' => $data['lien_film'],
+            ':duree_film' => $data['duree_film'],
+            ':id_film' => $id_film
+        ]);
 
+        if ($this->update->errorCode() != 0) {
+            print_r($this->update->errorInfo());
+            return false;
+        }
+        return $result;
+    }
 
     public function delete($id_film){
         try {
@@ -143,7 +151,7 @@ Class Films{
     }
 
 }
-
+//insertion data
 if(!empty($_POST['form_add_movie'])){
     $title = htmlspecialchars($_POST['form_title_movie'], ENT_QUOTES, 'UTF-8');
     $desc = htmlspecialchars($_POST['form_desc_movie'], ENT_QUOTES, 'UTF-8');
@@ -208,5 +216,6 @@ if(!empty($_POST['form_add_movie'])){
     }
 
 }
+
 
 
