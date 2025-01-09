@@ -64,7 +64,18 @@ $user = $_SESSION['utilisateur'];
         $req = $db->query('SELECT id_film, titre_film, description_film, affiche_film, duree_film FROM films;');
         $data = $req->fetchAll(PDO::FETCH_ASSOC);
         $req->closeCursor();
+
+        if (isset($_SESSION['success_message'])) {
+            echo "<div style='color: green;'>" . $_SESSION['success_message'] . "</div>";
+            unset($_SESSION['success_message']); 
+        }
+        
+        if (isset($_SESSION['error_message'])) {
+            echo "<div style='color: red;'>" . $_SESSION['error_message'] . "</div>";
+            unset($_SESSION['error_message']); // Supprime le message après affichage
+        }
         ?>
+        
         <table class="movies">
             <tr>
                 <th>Titre</th>

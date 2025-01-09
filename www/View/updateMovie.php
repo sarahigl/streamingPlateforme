@@ -26,9 +26,23 @@ if (isset($_POST['id_film'])) {
                 <label for="descMovieForm">Description :</label>
                 <input type="text" name="form_desc_movie" value="<?= htmlspecialchars($data['description_film']) ?>" id="descMovieForm" class="inputField">
 
-                <label for="imgMovieForm">Affiche :</label>
-                <input type="file" name="form_img_movie"  accept=".png, .jpg" id="imgMovieForm" class="inputField" value="<?= htmlspecialchars($data['affiche_film']) ?>">
+                <?php if (!empty($data['affiche_film'])): ?>
+                    <div>
+                        <p>Image actuelle :</p>
+                        <img src="<?= htmlspecialchars($data['affiche_film']) ?>" 
+                            alt="Affiche actuelle" 
+                            style="max-width: 200px; height: auto;">
+                    </div>
+                <?php endif; ?>
                 
+                <label for="imgMovieForm">Affiche :</label>
+                
+                <input type="hidden" name="current_image" value="<?= htmlspecialchars($data['affiche_film']) ?>">
+                <input type="file" 
+                        name="form_img_movie" 
+                        accept=".png, .jpg" 
+                        id="imgMovieForm" 
+                        class="inputField">
 
                 <label for="linkMovieForm">Lien :</label>
                 <input type="text" name="form_link_movie" value="<?= htmlspecialchars($data['lien_film']) ?>" id="linkMovieForm" class="inputField">

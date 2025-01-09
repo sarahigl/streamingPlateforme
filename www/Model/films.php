@@ -78,7 +78,7 @@ Class Films{
             WHERE id_film = :id_film;"
         );
         $this->update = $this->db->prepare('UPDATE films 
-                                            SET titre_film = :titrefilm, description_film = :description_film, affiche_film= :affiche_film, lien_film= :lien_film, duree_film= :duree_film
+                                            SET titre_film = :titre_film, description_film = :description_film, affiche_film= :affiche_film, lien_film= :lien_film, duree_film= :duree_film
                                             WHERE id_film = :id_film;');
         $this->delete = $this->db->prepare("DELETE FROM films WHERE id_film = :id_film;");
     }
