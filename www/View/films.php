@@ -82,8 +82,10 @@ $user = $_SESSION['utilisateur'];
                 <th>Description</th>
                 <th>Affiche</th>
                 <th>Duree</th>
+                <?php if ($user['id_role'] == 1) { ?>
                 <th>Supprimer</th>
                 <th>Modifier</th>
+                <?php } ?>
             </tr>
         <?php foreach ($data as $row) { ?>
             <tr>
@@ -91,20 +93,21 @@ $user = $_SESSION['utilisateur'];
                 <td class="details"><?= $row['description_film'] ?></td>
                 <td class="details"><img src="<?= $row['affiche_film'] ?>" alt="<?= $row['titre_film'] ?>" class="imgDisplay"></td>
                 <td class="details"><?= $row['duree_film'] ?> min</td>
+
+                <?php if ($user['id_role'] == 1) { ?>
                 <td class="details">
                     <form action="../Model/deleteMovie.php" method="POST">
                         <input type="hidden" name="films" value="<?= $row['id_film'] ?>">
                         <input type="submit" id="button" value="Supprimer">
-                    </form>
-                    
+                    </form> 
                 </td>
                 <td class="details">
                     <form action="updateMovie.php" method="POST">
                         <input type="hidden" name="id_film" value="<?= $row['id_film'] ?>">
                         <input type="submit" id="button" value="Modifier">
                     </form>
-                    
                 </td>
+                <?php } ?>
             </tr>
         <?php } ?>
         </table>
